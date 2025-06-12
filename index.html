@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Site Simples</title>
+  <title>Para Tamar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .heart {
@@ -26,72 +26,33 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-blue-600 text-white py-4">
-    <div class="container mx-auto px-4">
-      <h1 class="text-2xl font-bold">Bem-vindo ao Meu Site</h1>
-      <nav class="mt-2">
-        <ul class="flex space-x-4">
-          <li><a href="#home" class="hover:underline">Início</a></li>
-          <li><a href="#sobre" class="hover:underline">Sobre</a></li>
-          <li><a href="#contato" class="hover:underline">Contato</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container mx-auto px-4 py-8">
-    <section id="home" class="mb-8">
-      <h2 class="text-3xl font-semibold mb-4">Página Inicial</h2>
-      <p class="text-lg">Este é um site simples criado com HTML, CSS (via Tailwind) e JavaScript. Explore as seções para saber mais!</p>
-    </section>
-
-    <section id="sobre" class="mb-8">
-      <h2 class="text-3xl font-semibold mb-4">Sobre</h2>
-      <p class="text-lg">Aqui você pode adicionar informações sobre você ou seu projeto. Este é um exemplo de site responsivo.</p>
-    </section>
-
-    <section id="contato">
-      <h2 class="text-3xl font-semibold mb-4">Contato</h2>
-      <p class="text-lg mb-4">Entre em contato conosco!</p>
-      <button onclick="mostrarMensagem()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Clique Aqui</button>
-      <p id="mensagem" class="hidden mt-2 text-green-600">Obrigado por clicar!</p>
-      <button onclick="toggleContador()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mt-4">Mostrar Contador</button>
-      <div id="contadorSection" class="hidden relative mt-4 p-4 bg-white rounded-lg shadow-lg">
-        <div id="heartContainer" class="absolute inset-0"></div>
-        <h3 class="text-xl font-semibold mb-2 text-center">Tempo desde 12/06/2025 15:42</h3>
-        <p id="contador" class="text-lg text-center"></p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
-          <img src="https://via.placeholder.com/150" alt="Foto 1" class="photo w-full h-32 object-cover rounded">
-          <img src="https://via.placeholder.com/150" alt="Foto 2" class="photo w-full h-32 object-cover rounded">
-          <img src="https://via.placeholder.com/150" alt="Foto 3" class="photo w-full h-32 object-cover rounded">
-          <img src="https://via.placeholder.com/150" alt="Foto 4" class="photo w-full h-32 object-cover rounded">
-        </div>
-      </div>
-    </section>
+<body class="bg-black text-white font-sans min-h-screen flex flex-col items-center justify-center">
+  <main id="home" class="text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6">Tamar, clique aqui</h1>
+    <button onclick="mostrarContador()" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 text-lg">❤️ Clique</button>
   </main>
 
-  <footer class="bg-gray-800 text-white py-4">
-    <div class="container mx-auto px-4">
-      <p>© 2025 Meu Site. Todos os direitos reservados.</p>
+  <section id="contadorSection" class="hidden w-full min-h-screen bg-black flex flex-col items-center justify-center py-8">
+    <div class="relative w-full max-w-2xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg">
+      <div id="heartContainer" class="absolute inset-0"></div>
+      <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center text-pink-400">Eu te amo desde...</h2>
+      <p id="contador" class="text-xl md:text-2xl text-center mb-6"></p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <img src="https://via.placeholder.com/150" alt="Foto 1" class="photo w-full h-32 object-cover rounded">
+        <img src="https://via.placeholder.com/150" alt="Foto 2" class="photo w-full h-32 object-cover rounded">
+        <img src="https://via.placeholder.com/150" alt="Foto 3" class="photo w-full h-32 object-cover rounded">
+        <img src="https://via.placeholder.com/150" alt="Foto 4" class="photo w-full h-32 object-cover rounded">
+      </div>
     </div>
-  </footer>
+  </section>
 
   <script>
-    function mostrarMensagem() {
-      const mensagem = document.getElementById('mensagem');
-      mensagem.classList.toggle('hidden');
-    }
-
-    function toggleContador() {
+    function mostrarContador() {
+      document.getElementById('home').classList.add('hidden');
       const contadorSection = document.getElementById('contadorSection');
-      contadorSection.classList.toggle('hidden');
-      if (!contadorSection.classList.contains('hidden')) {
-        startContador();
-        criarCoracoes();
-      } else {
-        clearCoracoes();
-      }
+      contadorSection.classList.remove('hidden');
+      startContador();
+      criarCoracoes();
     }
 
     function startContador() {
@@ -103,7 +64,7 @@
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById('contador').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        document.getElementById('contador').textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
       }
       updateContador();
       setInterval(updateContador, 1000);
@@ -111,7 +72,7 @@
 
     function criarCoracoes() {
       const heartContainer = document.getElementById('heartContainer');
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 15; i++) {
         const heart = document.createElement('span');
         heart.className = 'heart';
         heart.textContent = '❤️';
@@ -119,11 +80,6 @@
         heart.style.animationDelay = `${Math.random() * 5}s`;
         heartContainer.appendChild(heart);
       }
-    }
-
-    function clearCoracoes() {
-      const heartContainer = document.getElementById('heartContainer');
-      heartContainer.innerHTML = '';
     }
   </script>
 </body>
