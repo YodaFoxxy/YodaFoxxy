@@ -1,49 +1,30 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Site Simples</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .heart {
+      position: absolute;
+      color: red;
+      font-size: 1.5rem;
+      animation: float 5s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(-100px); opacity: 0.3; }
+      100% { transform: translateY(0); opacity: 0.7; }
+    }
+    .photo {
+      transition: transform 0.3s;
+    }
+    .photo:hover {
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body class="bg-gray-100 font-sans">
   <header class="bg-blue-600 text-white py-4">
@@ -75,12 +56,24 @@
       <p class="text-lg mb-4">Entre em contato conosco!</p>
       <button onclick="mostrarMensagem()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Clique Aqui</button>
       <p id="mensagem" class="hidden mt-2 text-green-600">Obrigado por clicar!</p>
+      <button onclick="toggleContador()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mt-4">Mostrar Contador</button>
+      <div id="contadorSection" class="hidden relative mt-4 p-4 bg-white rounded-lg shadow-lg">
+        <div id="heartContainer" class="absolute inset-0"></div>
+        <h3 class="text-xl font-semibold mb-2 text-center">Tempo desde 12/06/2025 15:42</h3>
+        <p id="contador" class="text-lg text-center"></p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+          <img src="https://via.placeholder.com/150" alt="Foto 1" class="photo w-full h-32 object-cover rounded">
+          <img src="https://via.placeholder.com/150" alt="Foto 2" class="photo w-full h-32 object-cover rounded">
+          <img src="https://via.placeholder.com/150" alt="Foto 3" class="photo w-full h-32 object-cover rounded">
+          <img src="https://via.placeholder.com/150" alt="Foto 4" class="photo w-full h-32 object-cover rounded">
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="bg-gray-800 text-white py-4">
     <div class="container mx-auto px-4">
-      <p>&copy; 2025 Meu Site. Todos os direitos reservados.</p>
+      <p>© 2025 Meu Site. Todos os direitos reservados.</p>
     </div>
   </footer>
 
@@ -88,6 +81,49 @@
     function mostrarMensagem() {
       const mensagem = document.getElementById('mensagem');
       mensagem.classList.toggle('hidden');
+    }
+
+    function toggleContador() {
+      const contadorSection = document.getElementById('contadorSection');
+      contadorSection.classList.toggle('hidden');
+      if (!contadorSection.classList.contains('hidden')) {
+        startContador();
+        criarCoracoes();
+      } else {
+        clearCoracoes();
+      }
+    }
+
+    function startContador() {
+      const startDate = new Date('2025-06-12T15:42:00');
+      function updateContador() {
+        const now = new Date();
+        const diff = now - startDate;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('contador').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+      updateContador();
+      setInterval(updateContador, 1000);
+    }
+
+    function criarCoracoes() {
+      const heartContainer = document.getElementById('heartContainer');
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart';
+        heart.textContent = '❤️';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        heartContainer.appendChild(heart);
+      }
+    }
+
+    function clearCoracoes() {
+      const heartContainer = document.getElementById('heartContainer');
+      heartContainer.innerHTML = '';
     }
   </script>
 </body>
