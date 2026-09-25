@@ -3,216 +3,935 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09050b">
 
   <title>Para Tamar</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    .heart {
-      position: absolute;
-      color: red;
-      font-size: 1.5rem;
-      animation: float 5s ease-in-out infinite;
-      opacity: 0.7;
+    :root {
+      --pink: #ff5c93;
+      --pink-light: #ff9bc0;
+      --night: #070408;
     }
 
-    @keyframes float {
-      0% {
-        transform: translateY(0);
-        opacity: 0.7;
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: white;
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(190, 24, 93, 0.20),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 85% 25%,
+          rgba(126, 34, 206, 0.13),
+          transparent 30%
+        ),
+        linear-gradient(
+          145deg,
+          #030204 0%,
+          #0d0710 52%,
+          #050305 100%
+        );
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.26;
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        );
+      background-size: 42px 42px;
+      mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 85%
+      );
+    }
+
+    .home-screen {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .home-screen::before,
+    .home-screen::after {
+      content: "";
+      position: absolute;
+      width: 22rem;
+      height: 22rem;
+      border-radius: 999px;
+      filter: blur(90px);
+      opacity: 0.23;
+      z-index: -1;
+    }
+
+    .home-screen::before {
+      top: -7rem;
+      left: -7rem;
+      background: #ec4899;
+    }
+
+    .home-screen::after {
+      right: -8rem;
+      bottom: -8rem;
+      background: #7c3aed;
+    }
+
+    .home-card {
+      width: min(92vw, 700px);
+      padding: clamp(2rem, 7vw, 4.5rem);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 32px;
+      background: linear-gradient(
+        145deg,
+        rgba(31, 20, 36, 0.86),
+        rgba(13, 9, 17, 0.74)
+      );
+      box-shadow:
+        0 35px 90px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 1.1rem;
+      color: var(--pink-light);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .home-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3.2rem, 11vw, 6.4rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+      background: linear-gradient(
+        135deg,
+        #ffffff 15%,
+        #ffd5e5 50%,
+        #ff6aa0 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(
+        0 12px 28px rgba(255, 76, 135, 0.16)
+      );
+    }
+
+    .home-subtitle {
+      max-width: 31rem;
+      margin: 1.5rem auto 2.2rem;
+      color: rgba(255, 255, 255, 0.70);
+      font-size: clamp(1rem, 2.8vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .open-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      min-width: 190px;
+      padding: 0.95rem 1.6rem;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      color: white;
+      background: linear-gradient(
+        135deg,
+        #f43f78,
+        #be185d
+      );
+      box-shadow:
+        0 14px 35px rgba(225, 29, 93, 0.38);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+      animation: buttonGlow 2.6s ease-in-out infinite;
+    }
+
+    .open-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-120%);
+      background: linear-gradient(
+        100deg,
+        transparent,
+        rgba(255, 255, 255, 0.26),
+        transparent
+      );
+      transition: transform 0.7s ease;
+    }
+
+    .open-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow:
+        0 18px 42px rgba(225, 29, 93, 0.48);
+    }
+
+    .open-button:hover::after {
+      transform: translateX(120%);
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow:
+          0 14px 35px rgba(225, 29, 93, 0.32);
       }
 
       50% {
-        transform: translateY(-100px);
-        opacity: 0.3;
+        box-shadow:
+          0 18px 48px rgba(244, 63, 120, 0.54);
+      }
+    }
+
+    .content-section {
+      position: relative;
+      background: transparent;
+    }
+
+    .love-card {
+      position: relative;
+      isolation: isolate;
+      width: min(94vw, 1050px);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: clamp(22px, 4vw, 36px);
+      background: linear-gradient(
+        155deg,
+        rgba(26, 17, 31, 0.94),
+        rgba(11, 8, 14, 0.90)
+      );
+      box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(18px);
+    }
+
+    .content-layer {
+      position: relative;
+      z-index: 10;
+      padding: clamp(1.1rem, 3vw, 2.3rem);
+    }
+
+    /* Mantém os corações na frente das fotos */
+    .heart-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .heart {
+      --drift: 30px;
+      position: absolute;
+      display: block;
+      opacity: 0;
+      line-height: 1;
+      text-shadow:
+        0 0 12px currentColor,
+        0 6px 20px rgba(255, 51, 119, 0.58);
+      filter: drop-shadow(
+        0 4px 7px rgba(0, 0, 0, 0.32)
+      );
+      animation: floatHeart linear infinite;
+      will-change: transform, opacity;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform:
+          translate3d(0, 85px, 0)
+          rotate(-16deg)
+          scale(0.68);
+        opacity: 0;
+      }
+
+      11% {
+        opacity: 0.94;
+      }
+
+      76% {
+        opacity: 0.72;
       }
 
       100% {
-        transform: translateY(0);
-        opacity: 0.7;
+        transform:
+          translate3d(var(--drift), -255px, 0)
+          rotate(18deg)
+          scale(1.22);
+        opacity: 0;
       }
+    }
+
+    .love-header {
+      padding:
+        clamp(1.5rem, 5vw, 3.2rem)
+        1rem
+        clamp(1.2rem, 4vw, 2.2rem);
+      text-align: center;
+    }
+
+    .love-header h2 {
+      margin: 0.25rem 0 0.8rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.45rem, 7vw, 5rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      background: linear-gradient(
+        135deg,
+        #ffffff 10%,
+        #ffbad1 52%,
+        #ff5c93 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .love-header p {
+      max-width: 38rem;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.62);
+      line-height: 1.7;
+    }
+
+    .counter-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: clamp(0.55rem, 2vw, 1rem);
+      max-width: 780px;
+      margin: 1.8rem auto 0;
+    }
+
+    .counter-card {
+      padding:
+        clamp(0.9rem, 2.6vw, 1.35rem)
+        0.45rem;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.075),
+        rgba(255, 255, 255, 0.025)
+      );
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .counter-number {
+      display: block;
+      color: white;
+      font-size: clamp(1.65rem, 5vw, 2.65rem);
+      font-weight: 850;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      text-shadow:
+        0 7px 24px rgba(255, 92, 147, 0.16);
+    }
+
+    .counter-label {
+      display: block;
+      margin-top: 0.55rem;
+      color: var(--pink-light);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0 1.4rem;
+    }
+
+    .section-icon {
+      display: grid;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border:
+        1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      background:
+        rgba(255, 92, 147, 0.10);
+      box-shadow:
+        0 12px 30px rgba(190, 24, 93, 0.18);
+      font-size: 1.3rem;
+    }
+
+    .section-heading h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.55rem, 4vw, 2.15rem);
+      letter-spacing: -0.025em;
+    }
+
+    .section-heading p {
+      margin: 0.22rem 0 0;
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.92rem;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: clamp(0.85rem, 2.3vw, 1.45rem);
+    }
+
+    .photo-card {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border:
+        1px solid rgba(255, 255, 255, 0.11);
+      border-radius: clamp(17px, 3vw, 25px);
+      background: #160f19;
+      box-shadow:
+        0 18px 46px rgba(0, 0, 0, 0.35);
+      transform: translateZ(0);
+    }
+
+    .photo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to top,
+          rgba(17, 6, 15, 0.18),
+          transparent 30%
+        ),
+        linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.10),
+          transparent 24%
+        );
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.025);
     }
 
     .photo {
       width: 100%;
-      max-height: 80vh;
-      object-fit: contain;
-      transition: transform 0.3s;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition:
+        transform 0.7s cubic-bezier(.2, .8, .2, 1),
+        filter 0.5s ease;
     }
 
-    .photo:hover {
-      transform: scale(1.05);
+    .photo-card:hover .photo {
+      transform: scale(1.045);
+      filter: saturate(1.06) contrast(1.02);
+    }
+
+    .music-card {
+      position: relative;
+      z-index: 50;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 1rem 1.2rem;
+      margin-top:
+        clamp(1.8rem, 4vw, 2.8rem);
+      padding:
+        clamp(1rem, 3vw, 1.45rem);
+      border:
+        1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 92, 147, 0.11),
+        rgba(255, 255, 255, 0.035)
+      );
+    }
+
+    .music-icon {
+      display: grid;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(
+        135deg,
+        #fb4f87,
+        #be185d
+      );
+      box-shadow:
+        0 13px 28px rgba(225, 29, 93, 0.28);
+      font-size: 1.45rem;
+    }
+
+    .music-copy h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .music-copy p {
+      margin: 0.25rem 0 0;
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.86rem;
+    }
+
+    .music-card audio {
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 44px;
+      margin-top: 0.25rem;
+      border-radius: 999px;
+    }
+
+    .audio-status {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: #ffc1d7;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .signature {
+      margin: 2.3rem 0 0.35rem;
+      color: rgba(255, 255, 255, 0.45);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .home-card {
+        border-radius: 26px;
+      }
+
+      .counter-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 
-<body class="bg-black text-white font-sans min-h-screen">
+<body>
 
-  <!-- Página inicial -->
+  <!-- Tela inicial -->
   <main
     id="home"
-    class="min-h-screen flex flex-col items-center justify-center text-center px-4"
+    class="home-screen min-h-screen flex items-center justify-center px-4 py-10 text-center"
   >
-    <h1 class="text-4xl md:text-5xl font-bold mb-6">
-      Tamar, clique aqui
-    </h1>
+    <div class="home-card">
 
-    <button
-      type="button"
-      onclick="mostrarContador()"
-      class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 text-lg transition"
-    >
-      ❤️ Clique
-    </button>
+      <span class="eyebrow">
+        Um pouco da nossa história
+      </span>
+
+      <h1 class="home-title">
+        Tamar
+      </h1>
+
+      <p class="home-subtitle">
+        Reuni aqui algumas fotos, uma música e o tempo
+        que já caminhamos juntos.
+      </p>
+
+      <button
+        type="button"
+        onclick="mostrarContador()"
+        class="open-button"
+      >
+        <span>❤️</span>
+        <span>Ver as lembranças</span>
+      </button>
+
+    </div>
   </main>
 
   <!-- Conteúdo principal -->
   <section
     id="contadorSection"
-    class="hidden w-full min-h-screen bg-black flex flex-col items-center justify-center py-8 px-4"
+    class="content-section hidden min-h-screen px-3 py-5 sm:px-5 sm:py-9"
   >
-    <div class="relative w-full max-w-3xl mx-auto p-4 bg-gray-900 bg-opacity-80 rounded-lg shadow-lg overflow-hidden">
+    <div class="love-card">
 
-      <!-- Corações -->
+      <!-- Corações na frente das fotos -->
       <div
         id="heartContainer"
-        class="absolute inset-0 pointer-events-none overflow-hidden"
+        class="heart-layer"
+        aria-hidden="true"
       ></div>
 
-      <!-- Conteúdo -->
-      <div class="relative z-10">
+      <div class="content-layer">
 
-        <div class="text-center mb-8">
-          <h2 class="text-3xl md:text-4xl font-semibold text-pink-400">
-            Eu te amo faz...
+        <!-- Contador -->
+        <header class="love-header">
+
+          <span class="eyebrow">
+            Desde 08 de junho de 2024
+          </span>
+
+          <h2>
+            Eu te amo há...
           </h2>
 
-          <p id="contador" class="text-xl md:text-2xl mt-2"></p>
+          <p>
+            Contando desde o dia em que tudo começou.
+          </p>
+
+          <div
+            class="counter-grid"
+            aria-label="Tempo desde o início do relacionamento"
+          >
+            <div class="counter-card">
+              <span
+                id="dias"
+                class="counter-number"
+              >
+                0
+              </span>
+
+              <span class="counter-label">
+                dias
+              </span>
+            </div>
+
+            <div class="counter-card">
+              <span
+                id="horas"
+                class="counter-number"
+              >
+                00
+              </span>
+
+              <span class="counter-label">
+                horas
+              </span>
+            </div>
+
+            <div class="counter-card">
+              <span
+                id="minutos"
+                class="counter-number"
+              >
+                00
+              </span>
+
+              <span class="counter-label">
+                minutos
+              </span>
+            </div>
+
+            <div class="counter-card">
+              <span
+                id="segundos"
+                class="counter-number"
+              >
+                00
+              </span>
+
+              <span class="counter-label">
+                segundos
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Título da galeria -->
+        <div class="section-heading">
+
+          <span class="section-icon">
+            💞
+          </span>
+
+          <div>
+            <h3>
+              Alguns momentos
+            </h3>
+
+            <p>
+              Dez fotos que ajudam a contar o caminho até aqui.
+            </p>
+          </div>
         </div>
 
-        <!-- Galeria de fotos -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <!-- Galeria -->
+        <div class="gallery">
 
-          <!-- Seis novas fotos -->
-          <img
-            src="https://ibb.co/chVgDw9F"
-            alt="Nova foto 1"
-            class="photo rounded"
-          >
+          <!-- Foto 1 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/tT9qZ69n/Whats-App-Image-2026-09-25-at-09-55-55.jpg"
+              alt="Momento especial 1"
+              class="photo"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://ibb.co/vCv77trm"
-            alt="Nova foto 2"
-            class="photo rounded"
-          >
+          <!-- Foto 2 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/Y4TzzrK8/Whats-App-Image-2026-09-25-at-09-52-16.jpg"
+              alt="Momento especial 2"
+              class="photo"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://ibb.co/DfPyHrK3"
-            alt="Nova foto 3"
-            class="photo rounded"
-          >
+          <!-- Foto 3 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/XxfgrYJm/Whats-App-Image-2026-09-25-at-09-54-50.jpg"
+              alt="Momento especial 3"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://ibb.co/7tjbX87t"
-            alt="Nova foto 4"
-            class="photo rounded"
-          >
+          <!-- Foto 4 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/B2cwtd82/Whats-App-Image-2026-09-25-at-09-54-12.jpg"
+              alt="Momento especial 4"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://ibb.co/mV39vK3d"
-            alt="Nova foto 5"
-            class="photo rounded"
-          >
+          <!-- Foto 5 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/8gtK6bw5/Whats-App-Image-2026-09-25-at-09-55-26.jpg"
+              alt="Momento especial 5"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://ibb.co/VWBdby1h"
-            alt="Nova foto 6"
-            class="photo rounded"
-          >
+          <!-- Foto 6 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/ynsDKT9M/Whats-App-Image-2026-09-25-at-09-55-10.jpg"
+              alt="Momento especial 6"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <!-- Quatro fotos antigas -->
-          <img
-            src="https://i.ibb.co/1tXR0Phz/3.jpg"
-            alt="Foto 1"
-            class="photo rounded"
-          >
+          <!-- Foto 7 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/1tXR0Phz/3.jpg"
+              alt="Momento especial 7"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://i.ibb.co/yFtgyWjN/1.jpg"
-            alt="Foto 2"
-            class="photo rounded"
-          >
+          <!-- Foto 8 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/yFtgyWjN/1.jpg"
+              alt="Momento especial 8"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://i.ibb.co/s98bdg4z/4.jpg"
-            alt="Foto 3"
-            class="photo rounded"
-          >
+          <!-- Foto 9 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/s98bdg4z/4.jpg"
+              alt="Momento especial 9"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
-          <img
-            src="https://i.ibb.co/ZRQbdBFR/2.jpg"
-            alt="Foto 4"
-            class="photo rounded"
-          >
+          <!-- Foto 10 -->
+          <figure class="photo-card">
+            <img
+              src="https://i.ibb.co/ZRQbdBFR/2.jpg"
+              alt="Momento especial 10"
+              class="photo"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
 
         </div>
 
         <!-- Música -->
-        <div class="flex flex-col items-center">
+        <div class="music-card">
+
+          <span class="music-icon">
+            ♫
+          </span>
+
+          <div class="music-copy">
+            <h3>
+              A música desta página
+            </h3>
+
+            <p>
+              A trilha que acompanha essas fotos
+              e o tempo contado aqui.
+            </p>
+          </div>
+
           <audio
             id="musica"
             controls
             loop
             preload="auto"
-            class="w-full max-w-md"
           >
-            <source src="./musica.mp3" type="audio/mpeg">
+            <source
+              src="./musica.mp3"
+              type="audio/mpeg"
+            >
+
             Seu navegador não conseguiu reproduzir a música.
           </audio>
 
           <p
             id="audioStatus"
-            class="hidden mt-3 text-sm text-pink-300 text-center"
+            class="audio-status hidden"
           >
-            Se a música não começou automaticamente, pressione o botão de reprodução acima.
+            Se a música não começou automaticamente,
+            pressione o botão de reprodução acima.
           </p>
+
         </div>
+
+        <p class="signature">
+          Feito para Tamar.
+        </p>
 
       </div>
     </div>
   </section>
 
   <script>
+    let contadorInterval;
+
     function mostrarContador() {
-      document.getElementById("home").classList.add("hidden");
+      document
+        .getElementById("home")
+        .classList
+        .add("hidden");
 
       const contadorSection =
         document.getElementById("contadorSection");
 
       contadorSection.classList.remove("hidden");
 
-      // Inicia a música depois do clique.
-      const musica = document.getElementById("musica");
-      const audioStatus = document.getElementById("audioStatus");
+      const musica =
+        document.getElementById("musica");
+
+      const audioStatus =
+        document.getElementById("audioStatus");
 
       musica.volume = 0.7;
 
       musica.play().catch(function (erro) {
-        console.warn("O navegador bloqueou a reprodução:", erro);
+        console.warn(
+          "O navegador bloqueou a reprodução:",
+          erro
+        );
+
         audioStatus.classList.remove("hidden");
       });
 
       startContador();
       criarCoracoes();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
 
     function startContador() {
-      const startDate = new Date("2024-06-08T17:00:00");
+      const startDate =
+        new Date("2024-06-08T17:00:00");
 
       function updateContador() {
         const now = new Date();
-        const diff = now - startDate;
+
+        const diff =
+          Math.max(0, now - startDate);
 
         const days = Math.floor(
           diff / (1000 * 60 * 60 * 24)
@@ -232,29 +951,94 @@
           (diff % (1000 * 60)) / 1000
         );
 
-        document.getElementById("contador").textContent =
-          `${days} dias, ${hours} horas, ` +
-          `${minutes} minutos e ${seconds} segundos`;
+        document.getElementById("dias").textContent =
+          days;
+
+        document.getElementById("horas").textContent =
+          String(hours).padStart(2, "0");
+
+        document.getElementById("minutos").textContent =
+          String(minutes).padStart(2, "0");
+
+        document.getElementById("segundos").textContent =
+          String(seconds).padStart(2, "0");
       }
 
       updateContador();
-      setInterval(updateContador, 1000);
+
+      clearInterval(contadorInterval);
+
+      contadorInterval =
+        setInterval(updateContador, 1000);
     }
 
     function criarCoracoes() {
       const heartContainer =
         document.getElementById("heartContainer");
 
+      const heartSymbols = [
+        "♥",
+        "♥",
+        "♥",
+        "❤",
+        "♡"
+      ];
+
+      const heartColors = [
+        "#ff2f74",
+        "#ff5f96",
+        "#fb7185",
+        "#f9a8d4",
+        "#ffffff"
+      ];
+
+      const amount =
+        window.innerWidth < 640 ? 44 : 72;
+
       heartContainer.innerHTML = "";
 
-      for (let i = 0; i < 15; i++) {
-        const heart = document.createElement("span");
+      for (let i = 0; i < amount; i++) {
+        const heart =
+          document.createElement("span");
+
+        const duration =
+          5.5 + Math.random() * 5.5;
 
         heart.className = "heart";
-        heart.textContent = "❤️";
-        heart.style.left = `${Math.random() * 95}%`;
-        heart.style.top = `${Math.random() * 90}%`;
-        heart.style.animationDelay = `${Math.random() * 5}s`;
+
+        heart.textContent =
+          heartSymbols[
+            Math.floor(
+              Math.random() * heartSymbols.length
+            )
+          ];
+
+        heart.style.left =
+          `${2 + Math.random() * 94}%`;
+
+        heart.style.top =
+          `${5 + Math.random() * 94}%`;
+
+        heart.style.fontSize =
+          `${15 + Math.random() * 27}px`;
+
+        heart.style.color =
+          heartColors[
+            Math.floor(
+              Math.random() * heartColors.length
+            )
+          ];
+
+        heart.style.animationDuration =
+          `${duration}s`;
+
+        heart.style.animationDelay =
+          `${-Math.random() * duration}s`;
+
+        heart.style.setProperty(
+          "--drift",
+          `${-70 + Math.random() * 140}px`
+        );
 
         heartContainer.appendChild(heart);
       }
