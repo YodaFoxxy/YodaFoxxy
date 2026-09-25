@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Para Tamar</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -48,8 +46,6 @@
 </head>
 
 <body class="bg-black text-white font-sans min-h-screen">
-
-  <!-- Página inicial -->
   <main
     id="home"
     class="min-h-screen flex flex-col items-center justify-center text-center px-4"
@@ -67,22 +63,17 @@
     </button>
   </main>
 
-  <!-- Conteúdo principal -->
   <section
     id="contadorSection"
     class="hidden w-full min-h-screen bg-black flex flex-col items-center justify-center py-8 px-4"
   >
     <div class="relative w-full max-w-3xl mx-auto p-4 bg-gray-900 bg-opacity-80 rounded-lg shadow-lg overflow-hidden">
-
-      <!-- Corações -->
       <div
         id="heartContainer"
         class="absolute inset-0 pointer-events-none overflow-hidden"
       ></div>
 
-      <!-- Conteúdo -->
       <div class="relative z-10">
-
         <div class="text-center mb-8">
           <h2 class="text-3xl md:text-4xl font-semibold text-pink-400">
             Eu te amo faz...
@@ -91,42 +82,40 @@
           <p id="contador" class="text-xl md:text-2xl mt-2"></p>
         </div>
 
-        <!-- Galeria de fotos -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-
           <!-- Seis novas fotos -->
           <img
-            src="https://ibb.co/chVgDw9F"
+            src="https://i.ibb.co/8gtK6bw5/Whats-App-Image-2026-09-25-at-09-55-26.jpg"
             alt="Nova foto 1"
             class="photo rounded"
           >
 
           <img
-            src="https://ibb.co/vCv77trm"
+            src="https://i.ibb.co/Y4TzzrK8/Whats-App-Image-2026-09-25-at-09-52-16.jpg"
             alt="Nova foto 2"
             class="photo rounded"
           >
 
           <img
-            src="https://ibb.co/DfPyHrK3"
+            src="https://i.ibb.co/XxfgrYJm/Whats-App-Image-2026-09-25-at-09-54-50.jpg"
             alt="Nova foto 3"
             class="photo rounded"
           >
 
           <img
-            src="https://ibb.co/7tjbX87t"
+            src="https://i.ibb.co/B2cwtd82/Whats-App-Image-2026-09-25-at-09-54-12.jpg"
             alt="Nova foto 4"
             class="photo rounded"
           >
 
           <img
-            src="https://ibb.co/mV39vK3d"
+            src="https://i.ibb.co/tT9qZ69n/Whats-App-Image-2026-09-25-at-09-55-55.jpg"
             alt="Nova foto 5"
             class="photo rounded"
           >
 
           <img
-            src="https://ibb.co/VWBdby1h"
+            src="https://i.ibb.co/ynsDKT9M/Whats-App-Image-2026-09-25-at-09-55-10.jpg"
             alt="Nova foto 6"
             class="photo rounded"
           >
@@ -155,10 +144,8 @@
             alt="Foto 4"
             class="photo rounded"
           >
-
         </div>
 
-        <!-- Música -->
         <div class="flex flex-col items-center">
           <audio
             id="musica"
@@ -178,7 +165,6 @@
             Se a música não começou automaticamente, pressione o botão de reprodução acima.
           </p>
         </div>
-
       </div>
     </div>
   </section>
@@ -187,12 +173,9 @@
     function mostrarContador() {
       document.getElementById("home").classList.add("hidden");
 
-      const contadorSection =
-        document.getElementById("contadorSection");
-
+      const contadorSection = document.getElementById("contadorSection");
       contadorSection.classList.remove("hidden");
 
-      // Inicia a música depois do clique.
       const musica = document.getElementById("musica");
       const audioStatus = document.getElementById("audioStatus");
 
@@ -214,23 +197,14 @@
         const now = new Date();
         const diff = now - startDate;
 
-        const days = Math.floor(
-          diff / (1000 * 60 * 60 * 24)
-        );
-
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) /
-          (1000 * 60 * 60)
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
-
         const minutes = Math.floor(
-          (diff % (1000 * 60 * 60)) /
-          (1000 * 60)
+          (diff % (1000 * 60 * 60)) / (1000 * 60)
         );
-
-        const seconds = Math.floor(
-          (diff % (1000 * 60)) / 1000
-        );
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById("contador").textContent =
           `${days} dias, ${hours} horas, ` +
@@ -242,9 +216,7 @@
     }
 
     function criarCoracoes() {
-      const heartContainer =
-        document.getElementById("heartContainer");
-
+      const heartContainer = document.getElementById("heartContainer");
       heartContainer.innerHTML = "";
 
       for (let i = 0; i < 15; i++) {
@@ -260,6 +232,5 @@
       }
     }
   </script>
-
 </body>
 </html>
