@@ -35,8 +35,10 @@
     }
 
     .photo {
-      transition: transform 0.3s;
+      width: 100%;
       max-height: 80vh;
+      object-fit: contain;
+      transition: transform 0.3s;
     }
 
     .photo:hover {
@@ -89,30 +91,71 @@
           <p id="contador" class="text-xl md:text-2xl mt-2"></p>
         </div>
 
+        <!-- Galeria de fotos -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+
+          <!-- Seis novas fotos -->
+          <img
+            src="https://ibb.co/chVgDw9F"
+            alt="Nova foto 1"
+            class="photo rounded"
+          >
+
+          <img
+            src="https://ibb.co/vCv77trm"
+            alt="Nova foto 2"
+            class="photo rounded"
+          >
+
+          <img
+            src="https://ibb.co/DfPyHrK3"
+            alt="Nova foto 3"
+            class="photo rounded"
+          >
+
+          <img
+            src="https://ibb.co/7tjbX87t"
+            alt="Nova foto 4"
+            class="photo rounded"
+          >
+
+          <img
+            src="https://ibb.co/mV39vK3d"
+            alt="Nova foto 5"
+            class="photo rounded"
+          >
+
+          <img
+            src="https://ibb.co/VWBdby1h"
+            alt="Nova foto 6"
+            class="photo rounded"
+          >
+
+          <!-- Quatro fotos antigas -->
           <img
             src="https://i.ibb.co/1tXR0Phz/3.jpg"
             alt="Foto 1"
-            class="photo w-full object-contain rounded"
+            class="photo rounded"
           >
 
           <img
             src="https://i.ibb.co/yFtgyWjN/1.jpg"
             alt="Foto 2"
-            class="photo w-full object-contain rounded"
+            class="photo rounded"
           >
 
           <img
             src="https://i.ibb.co/s98bdg4z/4.jpg"
             alt="Foto 3"
-            class="photo w-full object-contain rounded"
+            class="photo rounded"
           >
 
           <img
             src="https://i.ibb.co/ZRQbdBFR/2.jpg"
             alt="Foto 4"
-            class="photo w-full object-contain rounded"
+            class="photo rounded"
           >
+
         </div>
 
         <!-- Música -->
@@ -149,7 +192,7 @@
 
       contadorSection.classList.remove("hidden");
 
-      // O clique do usuário permite que a música seja iniciada.
+      // Inicia a música depois do clique.
       const musica = document.getElementById("musica");
       const audioStatus = document.getElementById("audioStatus");
 
